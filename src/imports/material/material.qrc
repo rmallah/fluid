@@ -6,7 +6,6 @@
         <file>BottomSheetGrid.qml</file>
         <file>ElevationEffect.qml</file>
         <file>plugins.qmltypes</file>
-        <file>qmldir</file>
         <file>Ripple.qml</file>
         <file>Wave.qml</file>
     </qresource>

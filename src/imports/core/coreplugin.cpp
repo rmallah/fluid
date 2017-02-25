@@ -68,3 +68,5 @@ void FluidCorePlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<Device>(uri, 1, 0, "Device", deviceProvider);
     qmlRegisterSingletonType<StandardPaths>(uri, 1, 0, "StandardPaths", standardPathsProvider);
 }
+
+#include "coreplugin.moc"
