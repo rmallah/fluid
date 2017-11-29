@@ -207,6 +207,14 @@
         <file>action/watch_later.svg</file>
         <file>action/work.svg</file>
         <file>action/youtube_searched_for.svg</file>
+        <file>action/camera_enhance.svg</file>
+        <file>action/eject.svg</file>
+        <file>action/gif.svg</file>
+        <file>action/help_outline.svg</file>
+        <file>action/offline_pin.svg</file>
+        <file>action/reorder.svg</file>
+        <file>action/zoom_in.svg</file>
+        <file>action/zoom_out.svg</file>
         <file>alert/add_alert.svg</file>
         <file>alert/error.svg</file>
         <file>alert/error_outline.svg</file>
@@ -290,6 +298,8 @@
         <file>av/volume_up.svg</file>
         <file>av/web.svg</file>
         <file>av/web_asset.svg</file>
+        <file>av/hd.svg</file>
+        <file>av/sort_by_alpha.svg</file>
         <file>communication/business.svg</file>
         <file>communication/call.svg</file>
         <file>communication/call_end.svg</file>
@@ -336,6 +346,10 @@
         <file>communication/textsms.svg</file>
         <file>communication/voicemail.svg</file>
         <file>communication/vpn_key.svg</file>
+        <file>communication/phonelink_erase.svg</file>
+        <file>communication/phonelink_lock.svg</file>
+        <file>communication/phonelink_ring.svg</file>
+        <file>communication/phonelink_setup.svg</file>
         <file>content/add.svg</file>
         <file>content/add_box.svg</file>
         <file>content/add_circle.svg</file>
@@ -376,6 +390,7 @@
         <file>content/unarchive.svg</file>
         <file>content/undo.svg</file>
         <file>content/weekend.svg</file>
+        <file>content/font_download.svg</file>
         <file>device/access_alarm.svg</file>
         <file>device/access_alarms.svg</file>
         <file>device/access_time.svg</file>
@@ -455,6 +470,17 @@
         <file>device/widgets.svg</file>
         <file>device/wifi_lock.svg</file>
         <file>device/wifi_tethering.svg</file>
+        <file>device/signal_wifi_statusbar_1_bar.svg</file>
+        <file>device/signal_wifi_statusbar_2_bar.svg</file>
+        <file>device/signal_wifi_statusbar_3_bar.svg</file>
+        <file>device/signal_wifi_statusbar_4_bar.svg</file>
+        <file>device/signal_wifi_statusbar_connected_no_internet_1.svg</file>
+        <file>device/signal_wifi_statusbar_connected_no_internet_2.svg</file>
+        <file>device/signal_wifi_statusbar_connected_no_internet.svg</file>
+        <file>device/signal_wifi_statusbar_connected_no_internet_3.svg</file>
+        <file>device/signal_wifi_statusbar_connected_no_internet_4.svg</file>
+        <file>device/signal_wifi_statusbar_not_connected.svg</file>
+        <file>device/signal_wifi_statusbar_null.svg</file>
         <file>editor/attach_file.svg</file>
         <file>editor/attach_money.svg</file>
         <file>editor/border_all.svg</file>
@@ -522,6 +548,7 @@
         <file>editor/vertical_align_center.svg</file>
         <file>editor/vertical_align_top.svg</file>
         <file>editor/wrap_text.svg</file>
+        <file>editor/money_off.svg</file>
         <file>file/attachment.svg</file>
         <file>file/cloud.svg</file>
         <file>file/cloud_circle.svg</file>
@@ -583,6 +610,7 @@
         <file>hardware/tv.svg</file>
         <file>hardware/videogame_asset.svg</file>
         <file>hardware/watch.svg</file>
+        <file>hardware/device_hub.svg</file>
         <file>image/add_a_photo.svg</file>
         <file>image/add_to_photos.svg</file>
         <file>image/adjust.svg</file>
@@ -733,6 +761,11 @@
         <file>image/wb_incandescent.svg</file>
         <file>image/wb_iridescent.svg</file>
         <file>image/wb_sunny.svg</file>
+        <file>image/collections_bookmark.svg</file>
+        <file>image/photo_size_select_actual.svg</file>
+        <file>image/photo_size_select_large.svg</file>
+        <file>image/photo_size_select_small.svg</file>
+        <file>image/vignette.svg</file>
         <file>maps/add_location.svg</file>
         <file>maps/beenhere.svg</file>
         <file>maps/directions.svg</file>
@@ -936,6 +969,9 @@
         <file>toggle/radio_button_checked.svg</file>
         <file>toggle/radio_button_unchecked.svg</file>
         <file>toggle/star_half.svg</file>
+        <file>toggle/indeterminate_check_box.svg</file>
+        <file>toggle/star.svg</file>
+        <file>toggle/star_border.svg</file>
     </qresource>
 </RCC>
 
