@@ -215,6 +215,7 @@
         <file>action/reorder.svg</file>
         <file>action/zoom_in.svg</file>
         <file>action/zoom_out.svg</file>
+        <file>action/star_rate.svg</file>
         <file>alert/add_alert.svg</file>
         <file>alert/error.svg</file>
         <file>alert/error_outline.svg</file>

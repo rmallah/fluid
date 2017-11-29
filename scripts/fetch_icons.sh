@@ -10,8 +10,7 @@ function copy_icon()
 {
     for FILE in $ICONS; do
         ICON=$(basename $FILE)
-        NEW_NAME=$(echo $ICON | sed -E 's/ic_(.*)_24px.svg/\1.svg/' | sed -E 's/ic_(.*)_26x24px.svg/\1.svg/' | sed -E 's/ic_(.*)_48px.svg/\1.svg/')
-        #NEW_NAME=$(echo $ICON | sed -E 's/ic_(.*)_18px.svg/\1.svg/' | sed -E 's/ic_(.*)_24px.svg/\1.svg/' | sed -E 's/ic_(.*)_26x24px.svg/\1.svg/' | sed -E 's/ic_(.*)_48px.svg/\1.svg/')
+        NEW_NAME=$(echo $ICON | sed -E 's/ic_(.*)_18px.svg/\1.svg/' | sed -E 's/ic_(.*)_24px.svg/\1.svg/' | sed -E 's/ic_(.*)_26x24px.svg/\1.svg/' | sed -E 's/ic_(.*)_48px.svg/\1.svg/')
         BASE_NAME=$(echo $NEW_NAME | sed -E 's/.svg//')
         if [ ! -f $TARGET_DIR/$CATEGORY/$NEW_NAME ]; then
             cp $FILE $TARGET_DIR/$CATEGORY/$NEW_NAME
@@ -47,6 +46,9 @@ for CATEGORY in ${CATEGORIES[*]}; do
     copy_icon
 
     ICONS=$(ls $GIT_DIR/$CATEGORY/svg/production/*24px*)
+    copy_icon
+
+    ICONS=$(ls $GIT_DIR/$CATEGORY/svg/production/*18px*)
     copy_icon
 done
 

@@ -214,6 +214,7 @@ action
 	reorder
 	zoom_in
 	zoom_out
+	star_rate
 alert
 	add_alert
 	error
