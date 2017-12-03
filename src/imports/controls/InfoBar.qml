@@ -85,6 +85,13 @@ Rectangle {
      */
     signal clicked
 
+    /*!
+       This signal is emitted when the InfoBar has closed
+       after displaying the message due normal timeout
+       The handler is \c onClosed:
+     */
+    signal closed
+
     function open(text) {
         infoBar.text = text
         opened = true
@@ -115,7 +122,10 @@ Rectangle {
 
         onTriggered: {
             if (!running)
-                infoBar.opened = false
+            {
+                infoBar.opened = false;
+                closed();
+            }
         }
     }
 
