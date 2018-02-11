@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,24 +12,25 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 /*!
-   \qmltype HeadlineLabel
-   \inqmlmodule Fluid.Controls
-   \ingroup fluidcontrols
+    \qmltype HeadlineLabel
+    \inqmlmodule Fluid.Controls
+    \ingroup fluidcontrols
 
-   \brief Text label with standard font and styling suitable to headlines.
+    \brief Text label with standard font and styling suitable to headlines.
 
-   \code
-   HeadlineLabel {
-       text: qsTr("A translatable headline")
-   }
-   \endcode
+    Text label for the Material Design headline text style.
+
+    \snippet fluidcontrols-headinglabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
-   font.pixelSize: 22
-   color: "#26282a"
-   linkColor: "#45a7d7"
+Label {
+    font.pixelSize: 24
+    lineHeight: 32.0
+    lineHeightMode: Text.FixedHeight
 }

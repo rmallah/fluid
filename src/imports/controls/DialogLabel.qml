@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,27 +12,26 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
+import Fluid.Core 1.0 as FluidCore
 
 /*!
-   \qmltype DialogLabel
-   \inqmlmodule Fluid.Controls
-   \ingroup fluidcontrols
+    \qmltype DialogLabel
+    \inqmlmodule Fluid.Controls
+    \ingroup fluidcontrols
 
-   \brief Text label with standard font and styling suitable to message box text.
+    \brief Text label with standard font and styling suitable to message box text.
 
-   \code
-   import QtQuick 2.0
-   import Fluid.Controls 1.0 as FluidControls
+    Text label for the Material Design dialog text style.
 
-   FluidControls.DialogLabel {
-       text: "Text to display"
-   }
-   \endcode
+    \snippet fluidcontrols-dialoglabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
-   font.pixelSize: 18
-   color: "#909090"
-   linkColor: "#45a7d7"
+Label {
+    font.pixelSize: FluidCore.Device.isMobile ? 18 : 17
+    color: Material.secondaryTextColor
 }

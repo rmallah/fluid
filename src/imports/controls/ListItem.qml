@@ -1,8 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -13,56 +13,154 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
-import QtQuick.Layouts 1.2
-import Fluid.Controls 1.0
+import QtQuick 2.10
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
+import QtQuick.Controls.impl 2.3
+import QtQuick.Controls.Material 2.3
+import Fluid.Core 1.0 as FluidCore
+import Fluid.Controls 1.0 as FluidControls
 
 /*!
-   \qmltype BaseListItem
+   \qmltype ListItem
    \inqmlmodule Fluid.Controls
    \ingroup fluidcontrols
 
    \brief A standard list item, with one or more lines of text and optional left and right items.
  */
-BaseListItem {
+ItemDelegate {
     id: listItem
 
-    implicitHeight: Math.max(subText != "" ? maximumLineCount == 2 ? 72 : 88
-                                           : secondaryItem.showing ? secondaryItem.childrenRect.height + (label.visible ? Units.largeSpacing * 2 : Units.smallSpacing * 2) : 48,
-                             leftItem.childrenRect.height + Units.smallSpacing * 2,
-                             rightItem.childrenRect.height + Units.smallSpacing * 2)
+    /*!
+        \qmlproperty int dividerInset
 
-    dividerInset: leftItem.visible ? listItem.height : 0
+        How many pixels the divider is from the left border.
+        This property is set to the \l leftItem width by default.
 
+        \sa ListItem::showDivider
+        \sa ListItem::leftItem
+    */
+    property int dividerInset: leftItem.showing ? listItem.height : 0
+
+    /*!
+        \qmlproperty bool showDivider
+
+        This property holds whether the divider is shown or not.
+        Default value is \c false.
+    */
+    property alias showDivider: divider.visible
+
+    /*!
+        \qmlproperty int maximumLineCount
+
+        Maximum number of text lines allowed to show.
+    */
     property int maximumLineCount: 2
 
+    /*!
+        \qmlproperty string subText
+
+        Text to display below \l text.
+    */
     property alias subText: subLabel.text
+
+    /*!
+        \qmlproperty string valueText
+
+        Value text.
+    */
     property alias valueText: valueLabel.text
 
-    property alias iconName: icon.name
-    property alias iconSource: icon.source
+    /*!
+        \qmlproperty Item leftItem
 
+        Item to show on the left.
+    */
     property alias leftItem: leftItem.children
+
+    /*!
+        \qmlproperty Item rightItem
+
+        Item to show on the right.
+    */
     property alias rightItem: rightItem.children
+
+    /*!
+        \qmlproperty Item secondaryItem
+
+        Secondary item.
+    */
     property alias secondaryItem: secondaryItem.children
 
+    /*!
+        \internal
+    */
+    readonly property bool __isIconEmpty: listItem.icon.name === "" && listItem.icon.source.toString() === ""
+
+    icon.width: 24
+    icon.height: 24
+    icon.color: listItem.highlighted ? listItem.Material.primaryColor : enabled ? listItem.Material.iconColor : listItem.Material.iconDisabledColor
+
+    leftPadding: FluidControls.Units.smallSpacing * 2
+    rightPadding: FluidControls.Units.smallSpacing * 2
+    topPadding: 0
+    bottomPadding: 0
+
+    width: parent ? parent.width : undefined
+
+    hoverEnabled: FluidCore.Device.hoverEnabled
+
+    opacity: enabled ? 1.0 : 0.6
+
+    Layout.fillWidth: true
+
+    FluidControls.ThinDivider {
+        id: divider
+
+        x: dividerInset
+        y: parent.height - height
+
+        width: parent.width - x
+
+        visible: false
+    }
+
     contentItem: RowLayout {
-        spacing: Units.smallSpacing * 2
+        implicitHeight: {
+            var height = 0;
+
+            if (subText != "") {
+                if (maximumLineCount == 2)
+                    height = 72;
+                else
+                    height = 88;
+            } else {
+                if (secondaryItem.showing)
+                    height = secondaryItem.childrenRect.height + (label.visible ? FluidControls.Units.largeSpacing * 2 : FluidControls.Units.smallSpacing * 2);
+                else
+                    height = 48;
+            }
+
+            var leftHeight = leftItem.childrenRect.height + FluidControls.Units.smallSpacing * 2;
+            var rightHeight = rightItem.childrenRect.height + FluidControls.Units.smallSpacing * 2;
+
+            return Math.max(height, leftHeight, rightHeight);
+        }
+
+        spacing: FluidControls.Units.smallSpacing * 2
 
         Item {
             id: leftItem
+
+            readonly property bool showing: visibleChildren.length > 0
+
             objectName: "leftItem"
 
             Layout.preferredWidth: showing ? 40 : 0
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
 
-            property bool showing: visibleChildren.length > 0
-
-            Icon {
-                id: icon
+            IconLabel {
                 objectName: "icon"
 
                 anchors {
@@ -70,8 +168,13 @@ BaseListItem {
                     left: parent.left
                 }
 
-                visible: icon.valid
-                color: listItem.highlighted ? Material.primaryColor : enabled ? Material.iconColor : Material.iconDisabledColor
+                spacing: 16
+                mirrored: listItem.mirrored
+                display: IconLabel.IconOnly
+
+                icon: listItem.icon
+                color: listItem.enabled ? listItem.Material.foreground : listItem.Material.hintTextColor
+                visible: !listItem.__isIconEmpty
             }
         }
 
@@ -86,9 +189,9 @@ BaseListItem {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
                 visible: label.text != "" || valueLabel.text != ""
-                spacing: Units.smallSpacing
+                spacing: FluidControls.Units.smallSpacing
 
-                SubheadingLabel {
+                FluidControls.SubheadingLabel {
                     id: label
                     objectName: "textLabel"
 
@@ -96,7 +199,7 @@ BaseListItem {
                     Layout.fillWidth: true
 
                     // XXX: Hack to vertically center the label
-                    Layout.topMargin: subLabel.visible ? 0 : ((listItem.height - height) / 2) - Units.smallSpacing
+                    Layout.topMargin: subLabel.visible ? 0 : ((listItem.height - height) / 2) - FluidControls.Units.smallSpacing
 
                     text: listItem.text
                     elide: Text.ElideRight
@@ -105,7 +208,7 @@ BaseListItem {
                     visible: text != ""
                 }
 
-                BodyLabel {
+                FluidControls.BodyLabel {
                     id: valueLabel
                     objectName: "valueLabel"
 
@@ -120,7 +223,7 @@ BaseListItem {
                 }
             }
 
-            BodyLabel {
+            FluidControls.BodyLabel {
                 id: subLabel
                 objectName: "subTextLabel"
 
@@ -137,22 +240,25 @@ BaseListItem {
 
             Item {
                 id: secondaryItem
+
+                readonly property bool showing: visibleChildren.length > 0
+
                 objectName: "secondaryItem"
 
                 Layout.fillWidth: true
-                Layout.preferredHeight: showing ? childrenRect.height + (label.visible ? Units.smallSpacing : Units.largeSpacing) : 0
-
-                property bool showing: visibleChildren.length > 0
+                Layout.preferredHeight: showing ? childrenRect.height + (label.visible ? FluidControls.Units.smallSpacing : FluidControls.Units.largeSpacing) : 0
             }
         }
 
         Item {
             id: rightItem
+
+            readonly property bool showing: visibleChildren.length > 0
+
             objectName: "rightItem"
+
             Layout.preferredWidth: showing ? childrenRect.width : 0
             Layout.preferredHeight: parent.height
-
-            property bool showing: visibleChildren.length > 0
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,7 +12,7 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
+import QtQuick 2.10
 
 /*!
     \qmltype Object
@@ -23,16 +23,27 @@ import QtQuick 2.0
 
     The \l Object type is a non-visual element that extends \l QtObject
     with the ability to hold children objects.
+
+   \qml
+   import QtQuick 2.10
+   import Fluid.Core 1.0 as FluidCore
+
+   FluidCore.Object {
+       QtObject {}
+       QtObject {}
+   }
+   \endqml
 */
 QtObject {
+    id: object
+
+    /*!
+        \internal
+    */
     default property alias children: object.__children
 
     /*!
-        \qmlproperty list<QtObject> Object::children
-
-        Children objects.
+        \internal
     */
     property list<QtObject> __children: [QtObject {}]
-
-    id: object
 }

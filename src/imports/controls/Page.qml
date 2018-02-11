@@ -1,8 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -13,9 +13,9 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
 import Fluid.Controls 1.0 as FluidControls
 
 /*!
@@ -28,7 +28,7 @@ import Fluid.Controls 1.0 as FluidControls
    Example:
 
    \qml
-   import QtQuick 2.4
+   import QtQuick 2.10
    import Fluid.Controls 1.0 as FluidControls
 
    FluidControls.Page {
@@ -39,7 +39,7 @@ import Fluid.Controls 1.0 as FluidControls
                name: "Print"
 
                // Icon name from the Google Material Design icon pack
-               iconName: "action/print"
+               icon.source: FluidControls.Utils.iconUrl("action/print")
            }
        ]
    }
@@ -48,7 +48,7 @@ import Fluid.Controls 1.0 as FluidControls
 Page {
     id: page
 
-    /*
+    /*!
       \qmlproperty ActionBar actionBar
 
       The action bar for this page. Use it as a group property to customize
@@ -83,25 +83,31 @@ Page {
     property bool canGoBack: false
 
     /*!
-       This signal is emitted when the back action is triggered or back key is released.
+        \qmlsignal void goBack(var event)
 
-       By default, the page will be popped from the page stack. To change the default
-       behavior, for example to show a confirmation dialog, listen for this signal using
-       \c onGoBack and set \c event.accepted to \c true. To dismiss the page from your
-       dialog without triggering this signal and re-showing the dialog, call
-       \c page.forcePop().
-     */
+        This signal is emitted when the back action is triggered or back key is released.
+
+        By default, the page will be popped from the page stack. To change the default
+        behavior, for example to show a confirmation dialog, listen for this signal using
+        \c onGoBack and set \c event.accepted to \c true. To dismiss the page from your
+        dialog without triggering this signal and re-showing the dialog, call
+        \c page.forcePop().
+    */
     signal goBack(var event)
 
     /*!
-       Pop this page from the page stack. This does nothing if this page is not
-       the current page on the page stack.
+        \qmlmethod void Page::pop(event event, bool force)
 
-       Use \c force to avoid calling the \l goBack signal. This is useful if you
-       use the \l goBack signal to show a confirmation dialog, and want to close
-       the page from your dialog without showing the dialog again. You can also
-       use \c forcePop() as a shortcut to this behavior.
-     */
+        Pop this page from the page stack. This does nothing if this page is not
+        the current page on the page stack.
+
+        Use \c force to avoid calling the \l goBack signal. This is useful if you
+        use the \l goBack signal to show a confirmation dialog, and want to close
+        the page from your dialog without showing the dialog again. You can also
+        use \l Page::forcePop() as a shortcut to this behavior.
+
+        \sa Page::forcePop()
+    */
     function pop(event, force) {
         if (StackView.view.currentItem !== page)
             return false
@@ -119,15 +125,32 @@ Page {
         }
     }
 
+    /*!
+        \qmlmethod void Page::forcePop()
+
+        Force a pop from the page stack.
+    */
     function forcePop() {
         pop(null, true)
     }
 
     /*!
-       Push the specified component onto the page stack.
-     */
+        \qmlmethod void Page::push(Component component, object properties)
+
+        Push the specified component onto the page stack.
+
+        \sa StackView::push()
+    */
     function push(component, properties) {
         return StackView.view.push({item: component, properties: properties});
+    }
+
+    Keys.onReleased: {
+        // catches the Android back button event and pops the page, if it isn't the top page
+        if (event.key === Qt.Key_Back && StackView.view.depth > 1) {
+            pop(event, false);
+            event.accepted = true;
+        }
     }
 
     header: null
@@ -140,12 +163,14 @@ Page {
 
         title: page.title
 
-        leftAction: Action {
+        leftAction: FluidControls.Action {
+            icon.source: FluidControls.Utils.iconUrl("navigation/arrow_back")
+
             text: qsTr("Back")
-            tooltip: qsTr("Go back")
-            iconName: "navigation/arrow_back"
-            onTriggered: page.pop()
+            toolTip: qsTr("Go back")
             visible: page.canGoBack
+
+            onTriggered: page.pop()
         }
     }
 }

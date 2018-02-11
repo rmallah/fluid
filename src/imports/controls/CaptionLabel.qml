@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,8 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 /*!
     \qmltype CaptionLabel
@@ -22,14 +22,13 @@ import QtQuick.Templates 2.0 as T
 
     \brief Text label with standard font and styling suitable to captions.
 
-    \code
-    Caption {
-        text: qsTr("A translatable caption")
-    }
-    \endcode
+    Text label for the Material Design caption text style.
+
+    \snippet fluidcontrols-captionlabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
-    font.pixelSize: 10
-    color: "#26282a"
-    linkColor: "#45a7d7"
+Label {
+    font.pixelSize: 12
 }

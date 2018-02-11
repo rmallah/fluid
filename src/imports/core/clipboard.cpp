@@ -1,8 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -13,9 +13,9 @@
  * $END_LICENSE$
  */
 
-#include "clipboard.h"
-
 #include <QGuiApplication>
+
+#include "clipboard.h"
 
 /*!
     \qmltype Clipboard
@@ -37,18 +37,22 @@ Clipboard::Clipboard(QObject *parent)
 
     This property holds the clipboard text.
 */
-
 QString Clipboard::text() const
 {
     return m_clipboard->text();
 }
 
-void Clipboard::clear()
-{
-    m_clipboard->clear();
-}
-
 void Clipboard::setText(const QString &text)
 {
     m_clipboard->setText(text);
+}
+
+/*!
+    \qmlmethod void Clipboard::clear()
+
+    Clear the global clipboard contents.
+*/
+void Clipboard::clear()
+{
+    m_clipboard->clear();
 }

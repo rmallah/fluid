@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,11 +12,11 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
-import Fluid.Core 1.0 as FluidCore
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
 import Fluid.Controls 1.0 as FluidControls
+import Fluid.Controls.Private 1.0 as FluidControlsPrivate
 
 /*!
    \qmltype ApplicationWindow
@@ -25,13 +25,13 @@ import Fluid.Controls 1.0 as FluidControls
 
    \brief A window that provides features commonly used for Material Design apps.
 
-   This is normally what you should use as your root component. It provides a \l Toolbar and
+   This is normally what you should use as your root component. It provides a \l ToolBar and
    \l PageStack to provide access to standard features used by Material Design applications.
 
    Here is a short working example of an application:
 
    \qml
-   import QtQuick 2.4
+   import QtQuick 2.10
    import Fluid.Controls 1.0 as FluidControls
 
    FluidControls.ApplicationWindow {
@@ -63,8 +63,21 @@ ApplicationWindow {
        The color of the status bar or window decorations, if the current
        platform supports it.
      */
-    property alias decorationColor: platformExtensions.decorationColor
+    property alias decorationColor: windowDecoration.color
 
+    /*!
+        \qmlproperty Theme decorationTheme
+
+        Theme of the status bar or window decoration, if the current
+        platform supports it.
+    */
+    property alias decorationTheme: windowDecoration.theme
+
+    /*!
+        \qmlproperty AppToolBar appBar
+
+        The tool bar for this application.
+     */
     property alias appBar: appBar
 
     /*!
@@ -95,9 +108,9 @@ ApplicationWindow {
         onReplaced: appBar.replace(page)
     }
 
-    FluidCore.PlatformExtensions {
-        id: platformExtensions
+    FluidControlsPrivate.WindowDecoration {
+        id: windowDecoration
         window: window
-        decorationColor: Material.shade(window.Material.primaryColor, Material.Shade700)
+        color: Material.shade(window.Material.primaryColor, Material.Shade700)
     }
 }

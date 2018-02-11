@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,9 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import Fluid.Core 1.0 as FluidCore
 
 /*!
     \qmltype BodyLabel
@@ -22,13 +23,14 @@ import QtQuick.Templates 2.0 as T
 
     \brief Text label with standard font and styling suitable to body text.
 
-    \code
-    BodyLabel {
-        text: qsTr("Body text")
-    }
-    \endcode
+    Text label for the Material Design body text style.
+
+    \snippet fluidcontrols-bodylabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
+Label {
     /*!
         \qmlproperty int level
 
@@ -41,11 +43,13 @@ T.Label {
     */
     property int level: 1
 
-    font.pixelSize: 14
-    color: "#26282a"
-    linkColor: "#45a7d7"
+    font.pixelSize: FluidCore.Device.isMobile ? 14 : 13
+    font.weight: level == 1 ? Font.Normal : Font.Medium
+    lineHeight: level <= 1 ? 20.0 : 24.0
+    lineHeightMode: Text.FixedHeight
+
     onLevelChanged: {
         if (level < 1 || level > 2)
-            console.error("BodyLabel level must be either 1 or 2")
+            console.error("BodyLabel level must be either 1 or 2");
     }
 }

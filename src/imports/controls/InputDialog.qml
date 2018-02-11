@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,9 +12,9 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.0
-import QtQuick.Controls 2.1
+import QtQuick 2.10
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
 import Fluid.Controls 1.0 as FluidControls
 
 /*!
@@ -26,17 +26,22 @@ import Fluid.Controls 1.0 as FluidControls
 
     The dialog is automatically accepted when the Return or Enter key is pressed
     and the input in an acceptable state.
+
+    For more information you can read the
+    \l{https://material.io/guidelines/components/dialogs.html}{Material Design guidelines}.
 */
 Dialog {
     id: dialog
 
-    /*
+    /*!
+        \qmlproperty TextField textField
+
         Text field.
     */
     property alias textField: textField
 
-    /*
-        \qmlproperty string InputDialog::text
+    /*!
+        \qmlproperty string text
 
         Dialog text.
     */

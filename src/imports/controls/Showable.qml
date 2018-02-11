@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,7 +12,7 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
+import QtQuick 2.10
 
 /*!
     \qmltype Showable
@@ -22,7 +22,18 @@ import QtQuick 2.0
     \brief Showtable component.
 */
 FocusScope {
+    /*!
+        \qmlproperty Animation showAnimation
+
+        Animation to play to show the component.
+    */
     property var showAnimation
+
+    /*!
+        \qmlproperty Animation hideAnimation
+
+        Animation to play to hide the component.
+    */
     property var hideAnimation
 
     id: root
@@ -43,6 +54,11 @@ FocusScope {
         }
     }
 
+    /*!
+        \qmlmethod void Showable::show()
+
+        Show the component.
+    */
     function show() {
         // Stop hide animation if it's still running
         if (hideAnimation != undefined && hideAnimation.running)
@@ -56,6 +72,11 @@ FocusScope {
             showAnimation.restart();
     }
 
+    /*!
+        \qmlmethod void Showable::hide()
+
+        Hide the component.
+    */
     function hide() {
         // Stop show animation if it's still running
         if (showAnimation != undefined && showAnimation.running)

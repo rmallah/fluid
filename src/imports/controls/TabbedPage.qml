@@ -1,8 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -13,38 +13,100 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
-import Fluid.Core 1.0 as FluidCore
+import QtQuick 2.10
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
+import QtQuick.Controls.impl 2.3
+import QtQuick.Controls.Material 2.3
 import Fluid.Controls 1.0 as FluidControls
 
+/*!
+   \qmltype TabbedPage
+   \inqmlmodule Fluid.Controls
+   \ingroup fluidcontrols
+
+   \brief Page with tabs.
+
+   \qml
+   import QtQuick 2.10
+   import Fluid.Controls 1.0 as FluidControls
+
+   FluidControls.ApplicationWindow {
+       title: "Application Name"
+       width: 1024
+       height: 800
+       visible: true
+
+       initialPage: FluidControls.TabbedPage {
+           FluidControls.Tab {
+               title: "Tab 1"
+
+               Label {
+                   anchors.centerIn: parent
+                   text: "Hello World!"
+               }
+           }
+
+           FluidControls.Tab {
+               title: "Tab 2"
+
+               Label {
+                   anchors.centerIn: parent
+                   text: "Hello World!"
+               }
+           }
+       }
+   }
+   \endqml
+ */
 FluidControls.Page {
     id: page
 
+    /*!
+        \internal
+     */
     default property alias contents: swipeView.contentChildren
 
-    property alias count: swipeView.count
+    /*!
+        \qmlproperty int count
 
-    readonly property int currentIndex: __private.currentTabIndex
+        Number of tabs.
+    */
+    readonly property alias count: swipeView.count
 
     /*!
-       The currently selected tab.
-     */
-    readonly property Tab selectedTab: count > 0
-                                       ? swipeView.contentChildren[currentIndex] : null
+        \qmlproperty int currentIndex
 
-    onCurrentIndexChanged: swipeView.currentIndex = currentIndex
+        Index of the currently selected tab.
+    */
+    readonly property alias currentIndex: swipeView.currentIndex
 
-    QtObject {
-        id: __private
+    /*!
+        \qmlproperty Item selectedTab
 
-        property alias currentTabIndex: tabBar.currentIndex
-    }
+        The currently selected tab.
+    */
+    readonly property alias selectedTab: swipeView.currentItem
+
+    /*!
+        \qmlproperty ToolBar tabBar
+
+        Tool bar that contains tabs.
+    */
+    readonly property alias tabBar: tabToolBar
+
+    /*!
+        \qmlproperty TabBar tabs
+
+        Tab bar.
+    */
+    readonly property alias tabs: tabBar
 
     appBar.elevation: 0
 
     header: ToolBar {
+        id: tabToolBar
+
         visible: tabBar.count > 0
 
         Material.elevation: 2
@@ -63,51 +125,63 @@ FluidControls.Page {
                 horizontalCenter: centered ? parent.horizontalCenter : undefined
             }
 
+            currentIndex: swipeView.currentIndex
+
             Material.accent: appBar.Material.foreground
             Material.background: "transparent"
             
 
             Repeater {
-                model: swipeView.contentChildren
+                model: swipeView.contentChildren.length
                 delegate: TabButton {
-                    text: modelData.title
-                    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                                                         contentItem.implicitWidth +
-                                                         (tabIcon.visible ? tabIcon.width : 0) +
-                                                         (tabCloseButton.visible ? tabCloseButton.width : 0) +
-                                                         leftPadding + rightPadding)
+                    id: tabButton
+
+                    property var delegateData: swipeView.contentChildren[index]
+
+                    icon.name: delegateData.icon.name
+                    icon.source: delegateData.icon.source
+
+                    text: delegateData.title
+
                     width: parent.fixed ? parent.width / parent.count : implicitWidth
 
                     // Active color
                     Material.accent: appBar.Material.foreground
 
                     // Unfocused color
-                    Material.foreground: FluidCore.Utils.alpha(appBar.Material.foreground, 0.7)
+                    Material.foreground: FluidControls.Color.transparent(appBar.Material.foreground, 0.7)
 
-                    FluidControls.Icon {
-                        id: tabIcon
+                    contentItem: RowLayout {
+                        IconLabel {
+                            id: tabIcon
 
-                        anchors.left: parent.left
-                        anchors.verticalCenter: parent.verticalCenter
+                            spacing: tabButton.spacing
+                            mirrored: tabButton.mirrored
+                            display: tabButton.display
 
-                        name: modelData.iconName
-                        source: modelData.iconSource
-                        visible: status == Image.Ready
-                        color: contentItem.color
-                    }
+                            icon: tabButton.icon
+                            text: tabButton.text
+                            font: tabButton.font
+                            color: tabButton.icon.color
 
-                    FluidControls.IconButton {
-                        id: tabCloseButton
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
 
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.rightMargin: -rightPadding
+                        FluidControls.ToolButton {
+                            id: tabCloseButton
 
-                        iconName: "navigation/close"
-                        iconColor: contentItem.color
-                        visible: modelData.canRemove
+                            icon.width: 16
+                            icon.height: 16
+                            icon.source: FluidControls.Utils.iconUrl("navigation/close")
 
-                        onClicked: swipeView.removeItem(index)
+                            focus: Qt.NoFocus
+                            visible: delegateData.canRemove
+
+                            onClicked: page.removeTab(index)
+
+                            Layout.alignment: Qt.AlignVCenter
+                        }
                     }
                 }
             }
@@ -117,14 +191,67 @@ FluidControls.Page {
     SwipeView {
         id: swipeView
         anchors.fill: parent
-        currentIndex: __private.currentTabIndex
-
-        onCurrentIndexChanged: __private.currentTabIndex = currentIndex
+        currentIndex: tabBar.currentIndex
     }
 
+    /*!
+        \qmlmethod void TabbedPage::addTab(Tab tab)
+
+        Add a tab programmatically to the page.
+     */
     function addTab(tab) {
         swipeView.addItem(tab);
-        __private.currentTabIndex = swipeView.count - 1;
+        swipeView.setCurrentIndex(swipeView.count - 1);
+    }
+
+    /*!
+        \qmlmethod void TabbedPage::removeTab(int index)
+
+        Remove the tab with \a index programmatically.
+    */
+    function removeTab(index) {
+        swipeView.removeItem(index);
+        swipeView.decrementCurrentIndex();
+    }
+
+    /*!
+        \qmlmethod Tab TabbedPage::getTab(int index)
+
+        Return the tab with \a index.
+    */
+    function getTab(index) {
+        return swipeView.itemAt(index);
+    }
+
+    /*!
+        \qmlmethod void TabbedPage::setCurrentIndex(int index)
+
+        Select the tab that correspond to \a index.
+    */
+    function setCurrentIndex(index) {
+        swipeView.setCurrentIndex(index);
+    }
+
+    /*!
+        \qmlmethod void TabbedPage::incrementCurrentIndex()
+
+        Increment current index.
+
+        \sa currentIndex
+    */
+    function incrementCurrentIndex() {
+        swipeView.incrementCurrentIndex();
+    }
+
+    /*!
+        \qmlmethod void TabbedPage::decrementCurrentIndex()
+
+        Decrement current index.
+
+        \sa currentIndex
+    */
+    function decrementCurrentIndex() {
+        swipeView.decrementCurrentIndex();
     }
 
     function focusTab(index) {

@@ -1,8 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -13,7 +13,7 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
+import QtQuick 2.10
 
 /*!
     \qmltype ColumnFlow
@@ -23,7 +23,7 @@ import QtQuick 2.4
     \brief Automatically position children in columns.
 
     \code
-    import QtQuick 2.0
+    import QtQuick 2.10
     import Fluid.Layouts 1.0 as FluidLayouts
 
     Item {
@@ -50,13 +50,55 @@ import QtQuick 2.4
 Item {
     id: columnFlow
 
+    /*!
+        \qmlproperty int columnWidth
+
+        Column width.
+        This property is \c 100 by default.
+    */
     property int columnWidth: 100
 
+    /*!
+        \qmlproperty int columns
+
+        Number of columns.
+        By default it fits as many columns as possible.
+    */
     property int columns: Math.max(0, Math.floor(width / columnWidth))
+
+    /*!
+        \qmlproperty any model
+
+        The model providing data to the column flow.
+
+        This property can be set to any of the supported \l {qml-data-models}{data models}.
+
+        \sa Repeater::model
+    */
     property alias model: repeater.model
+
+    /*!
+        \qmlproperty Component delegate
+
+        The delegate provides a template defining each item istantiated by the column flow.
+
+        \sa Repeater::delegate
+    */
     property alias delegate: repeater.delegate
+
+    /*!
+        \qmlproperty int contentHeight
+
+        Content height.
+    */
     property int contentHeight: 0
-    property bool repeaterCompleted: false
+
+    /*!
+        \qmlproperty bool repeaterCompleted
+
+        This property holds whether the layout is done.
+    */
+    readonly property alias repeaterCompleted: __private.repeaterCompleted
 
     height: contentHeight
 
@@ -71,6 +113,11 @@ Item {
         property bool repeaterCompleted: false
     }
 
+    /*!
+        \qmlmethod void ColumnFlow::updateWidths()
+
+        Set the width of all delegates.
+    */
     function updateWidths() {
         if (repeaterCompleted) {
             var count = 0;
@@ -86,6 +133,11 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void ColumnFlow::reEvalColumns()
+
+        Relayout the columns.
+    */
     function reEvalColumns() {
         if (!repeaterCompleted)
             return;
@@ -154,7 +206,7 @@ Item {
         model: columnFlow.model
 
         Component.onCompleted: {
-            columnFlow.repeaterCompleted = true;
+            __private.repeaterCompleted = true;
             columnFlow.reEvalColumns();
         }
     }

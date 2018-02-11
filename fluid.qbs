@@ -1,83 +1,36 @@
 import qbs 1.0
-import qbs.FileInfo
+import qbs.Probes
 
 Project {
     name: "Fluid"
 
-    readonly property string version: "0.10.0"
+    readonly property string version: "0.11.0"
+    readonly property var versionParts: version.split('.').map(function(part) { return parseInt(part); })
 
-    property bool documentationEnabled: true
-    property bool demoEnabled: true
+    readonly property string minimumQtVersion: "5.10.0"
+
+    property bool useSystemQbsShared: false
+
+    property bool useStaticAnalyzer: false
+
     property bool autotestEnabled: false
     property stringList autotestArguments: []
     property stringList autotestWrapper: []
 
-    minimumQbsVersion: "1.6"
+    property bool withDocumentation: true
+    property bool withDemo: true
 
-    qbsSearchPaths: ["qbs/shared", "qbs/local"]
+    property bool deploymentEnabled: false
+
+    minimumQbsVersion: "1.9.0"
+
+    qbsSearchPaths: useSystemQbsShared ? [] : ["qbs/shared"]
 
     references: [
-        "icons/icons.qbs",
-        "src/fluid/fluid.qbs",
-        "src/imports/core/core.qbs",
-        "src/imports/controls/controls.qbs",
-        "src/imports/effects/effects.qbs",
-        "src/imports/layouts/layouts.qbs",
-        "src/imports/material/material.qbs",
-        "tests/auto/controls/controls.qbs",
-        "tests/auto/core/core.qbs",
-        "tests/auto/material/material.qbs",
+        "doc/doc.qbs",
+        "src/imports/imports.qbs",
+        "src/demo/demo.qbs",
+        "src/deployment/deployment.qbs",
+        "tests/auto/auto.qbs",
     ]
-
-    SubProject {
-        filePath: "doc/doc.qbs"
-
-        Properties {
-            condition: documentationEnabled
-        }
-    }
-
-    SubProject {
-        filePath: "src/demo/demo.qbs"
-
-        Properties {
-            condition: demoEnabled
-        }
-    }
-
-    AutotestRunner {
-        Depends { name: "lirideployment" }
-        Depends { name: "fluidcontrolsplugin" }
-        Depends { name: "fluidcoreplugin" }
-        Depends { name: "fluideffectsplugin" }
-        Depends { name: "fluidlayoutsplugin" }
-        Depends { name: "fluidmaterialplugin" }
-
-        builtByDefault: autotestEnabled
-        name: "fluid-autotest"
-        arguments: project.autotestArguments
-        wrapper: project.autotestWrapper
-        environment: {
-            var env = base;
-            env.push("QML2_IMPORT_PATH=" + FileInfo.joinPaths(qbs.installRoot, qbs.installPrefix, lirideployment.qmlDir));
-            return env;
-        }
-    }
-
-    InstallPackage {
-        name: "fluid-artifacts"
-        targetName: name
-        builtByDefault: false
-
-        archiver.type: "tar"
-        archiver.outputDirectory: project.buildDirectory
-
-        Depends { name: "Fluid" }
-        Depends { name: "fluidcontrolsplugin" }
-        Depends { name: "fluidcoreplugin" }
-        Depends { name: "fluideffectsplugin" }
-        Depends { name: "fluidlayoutsplugin" }
-        Depends { name: "fluidmaterialplugin" }
-        Depends { name: "Icons" }
-    }
 }

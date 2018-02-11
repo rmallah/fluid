@@ -1,42 +1,32 @@
 import qbs 1.0
+import qbs.FileInfo
 
-LiriDynamicLibrary {
+LiriQmlPlugin {
     name: "fluidcontrolsplugin"
-    targetName: "fluidcontrolsplugin"
+    pluginPath: "Fluid/Controls"
 
-    Depends { name: "lirideployment" }
-    Depends { name: "cpp" }
-    Depends { name: "Qt"; submodules: ["gui", "qml", "quick"] }
+    Depends { name: "Android.ndk"; condition: qbs.targetOS.contains("android") }
+
+    Properties {
+        condition: qbs.targetOS.contains("android")
+        architectures: !qbs.architecture ? ["x86", "armv7a"] : undefined
+        Android.ndk.appStl: "gnustl_shared"
+    }
+
+    Properties {
+        condition: qbs.targetOS.contains("osx")
+        cpp.linkerFlags: ["-lstdc++"]
+    }
 
     cpp.defines: base.concat(['FLUID_VERSION="' + project.version + '"'])
 
-    files: ["*.cpp", "*.h"]
-
     Group {
-        name: "QML Files"
-        files: [
-            "*.qml",
-            "qmldir",
-            "plugins.qmltypes"
-        ]
-        fileTags: ["qml"]
+        name: "QML"
+        files: ["qmldir", "*.qml", "*.qmltypes"]
     }
 
     Group {
-        name: "QML Files (Material)"
-        files: ["+material/*.qml"]
-        fileTags: ["qml.material"]
-    }
-
-    Group {
-        qbs.install: true
-        qbs.installDir: lirideployment.qmlDir + "/Fluid/Controls"
-        fileTagsFilter: ["dynamiclibrary", "qml"]
-    }
-
-    Group {
-        qbs.install: true
-        qbs.installDir: lirideployment.qmlDir + "/Fluid/Controls/+material"
-        fileTagsFilter: ["qml.material"]
+        name: "Sources"
+        files: ["*.cpp", "*.h", "*.qrc"]
     }
 }

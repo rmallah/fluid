@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,7 +12,8 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
+import QtQuick 2.10
+import QtQuick.Controls.Material 2.3
 
 /*!
    \qmltype ThinDivider
@@ -22,7 +23,7 @@ import QtQuick 2.4
    \brief A 1px high divider for use in lists and other columns of content.
  */
 Rectangle {
-    color: "#999"
+    color: Material.dividerColor
     width: parent.width
     height: 1
 }

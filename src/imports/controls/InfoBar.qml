@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  * Copyright (C) 2014-2016 Michael Spencer <sonrisesoftware@gmail.com>
  * Copyright (C) 2014 Bogdan Cuza <bogdan.cuza@hotmail.com>
  *
@@ -14,10 +14,10 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
+import QtQuick 2.10
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
 import Fluid.Core 1.0
 
 /*!
@@ -42,56 +42,71 @@ import Fluid.Core 1.0
        }
    }
    \endcode
+
+    For more information you can read the
+    \l{https://material.io/guidelines/components/snackbars-toasts.html}{Material Design guidelines}.
 */
 Rectangle {
     id: infoBar
 
     /*!
-       Button text. Empty by default.
-       The button will not be visible if the text is empty.
-     */
+        \qmlproperty string buttonText
+
+        Button text. Empty by default.
+        The button will not be visible if the text is empty.
+    */
     property string buttonText
 
     /*!
-       Button color.
-     */
+        \qmlproperty color buttonColor
+
+        Button color.
+    */
     property color buttonColor: Material.accentColor
 
     /*!
-       Text to display.
-     */
+        \qmlproperty string text
+
+        Text to display.
+    */
     property string text
 
     /*!
-       Whether the bar is open or not.
-     */
+        \qmlproperty bool opened
+
+        Whether the bar is open or not.
+    */
     property bool opened
 
     /*!
-       Amount of time (in ms) to keep the notification visible.
-       The default is 2s.
-     */
+        \qmlproperty int duration
+
+        Amount of time (in ms) to keep the notification visible.
+        The default is 2s.
+    */
     property int duration: 2000
 
     /*!
-       Whether the bar should take full screen width.
-       The default depends on the device: full width only on phones and tablets.
-     */
+        \qmlproperty bool fullWidth
+
+        Whether the bar should take full screen width.
+        The default depends on the device: full width only on phones and tablets.
+    */
     property bool fullWidth: Device.type === Device.phone || Device.type === Device.phablet
 
     /*!
-       This signal is emitted when the button is clicked.
-       The handler is \c onClicked.
-     */
-    signal clicked
+        \qmlsignal clicked()
+
+        This signal is emitted when the button is clicked.
+        The handler is \c onClicked.
+    */
+    signal clicked()
 
     /*!
-       This signal is emitted when the InfoBar has closed
-       after displaying the message due normal timeout
-       The handler is \c onClosed:
-     */
-    signal closed
+        \qmlmethod void InfoBar::open(string text)
 
+        Open the bar with the specified \a text.
+    */
     function open(text) {
         infoBar.text = text
         opened = true
@@ -122,10 +137,7 @@ Rectangle {
 
         onTriggered: {
             if (!running)
-            {
-                infoBar.opened = false;
-                closed();
-            }
+                infoBar.opened = false
         }
     }
 

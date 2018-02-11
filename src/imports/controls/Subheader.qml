@@ -1,7 +1,8 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,10 +13,10 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.4
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
-import Fluid.Controls 1.0
+import QtQuick 2.10
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
 
 /*!
    \qmltype Subheader
@@ -23,19 +24,35 @@ import Fluid.Controls 1.0
    \ingroup fluidcontrols
 
    \brief Subheaders are special list tiles that delineate distinct sections of a list or grid list.
+
+    For more information you can read the
+    \l{https://material.io/guidelines/components/subheaders.html}{Material Design guidelines}.
  */
-BaseListItem {
+ItemDelegate {
     id: listItem
 
-    implicitHeight: 48
-    interactive: false
+    /*!
+        \qmlproperty color textColor
 
+        Text color.
+    */
     property alias textColor: label.color
+
+    width: parent ? parent.width : undefined
+    hoverEnabled: false
+    opacity: enabled ? 1.0 : 0.6
+
+    Layout.fillWidth: true
+
+    background: Item {
+        implicitHeight: 48
+    }
 
     contentItem: Label {
         id: label
 
-        font: FluidStyle.subheaderFont
+        font.weight: Font.DemiBold
+        font.pixelSize: 14
         text: listItem.text
 
         verticalAlignment: Text.AlignVCenter

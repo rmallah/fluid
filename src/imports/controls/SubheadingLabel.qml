@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,9 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import Fluid.Core 1.0 as FluidCore
 
 /*!
     \qmltype SubheadingLabel
@@ -22,13 +23,14 @@ import QtQuick.Templates 2.0 as T
 
     \brief Text label with standard font and styling suitable to subheading.
 
-    \code
-    SubheadingLabel {
-        text: qsTr("A translatable subheading")
-    }
-    \endcode
+    Text label for the Material Design subheading text style.
+
+    \snippet fluidcontrols-subheadinglabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
+Label {
     /*!
         \qmlproperty int level
 
@@ -41,11 +43,12 @@ T.Label {
     */
     property int level: 1
 
-    font.pixelSize: 14
-    color: "#26282a"
-    linkColor: "#45a7d7"
+    font.pixelSize: FluidCore.Device.isMobile ? 16 : 15
+    lineHeight: level <= 1 ? 24.0 : 28.0
+    lineHeightMode: Text.FixedHeight
+
     onLevelChanged: {
         if (level < 1 || level > 2)
-            console.error("BodyLabel level must be either 1 or 2")
+            console.error("BodyLabel level must be either 1 or 2");
     }
 }

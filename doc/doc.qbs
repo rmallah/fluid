@@ -3,14 +3,13 @@ import qbs 1.0
 Product {
     property string versionTag: project.version.replace(/\.|-/g, "")
 
-    name: "Documentation"
-    condition: qbsbuildconfig.withDocumentation
+    name: "fluid-doc"
+    condition: project.withDocumentation && !qbs.targetOS.contains("android")
     builtByDefault: true
     type: "qch"
 
-    Depends { name: "qbsbuildconfig" }
     Depends { name: "lirideployment" }
-    Depends { name: "Qt.core" }
+    Depends { name: "Qt.core"; versionAtLeast: project.minimumQtVersion }
 
     Qt.core.qdocEnvironment: [
         "FLUID_VERSION=" + project.version,
@@ -37,15 +36,21 @@ Product {
     }
 
     Group {
+        name: "Style"
+        prefix: "template/style/"
+        files: "**"
+    }
+
+    Group {
         fileTagsFilter: ["qdoc-output"]
         qbs.install: true
-        qbs.installDir: lirideployment.docDir + "/fluid/html"
+        qbs.installDir: qbs.targetOS.contains("linux") ? lirideployment.docDir + "/fluid/html" : "Docs"
         qbs.installSourceBase: Qt.core.qdocOutputDir
     }
 
     Group {
         fileTagsFilter: ["qch"]
         qbs.install: false
-        qbs.installDir: lirideployment.docDir + "/fluid/html"
+        qbs.installDir: qbs.targetOS.contains("linux") ? lirideployment.docDir + "/fluid/html" : "Docs"
     }
 }

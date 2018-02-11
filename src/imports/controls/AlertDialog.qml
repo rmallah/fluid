@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,8 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import Fluid.Controls 1.0 as FluidControls
 
 /*!
@@ -29,29 +29,10 @@ import Fluid.Controls 1.0 as FluidControls
     Most alert don't need a title and they summarize a decision in a sentence or two
     by either asking a question or making a statement related to the action buttons.
 
-   Here is a short example of usage:
+    \snippet fluidcontrols-alertdialog.qml file
 
-   \qml
-   import QtQuick 2.4
-   import QtQuick.Controls 2.1
-   import Fluid.Controls 1.0 as FluidControls
-
-   Item {
-       FluidControls.AlertDialog {
-           id: alertDialog
-           title: "Use FooBar's localization service?"
-           text: "Let FooBar help apps determine the location. " +
-                 "This means sending anonymous location data to FooBar, " +
-                 "even when no apps are running."
-       }
-
-       Button {
-           anchors.centerIn: parent
-           text: "Click me"
-           onClicked: alertDialog.open()
-       }
-   }
-   \endqml
+    For more information you can read the
+    \l{https://material.io/guidelines/components/dialogs.html}{Material Design guidelines}.
 */
 Dialog {
     /*!
@@ -60,6 +41,8 @@ Dialog {
     default property alias content: dialogContent.data
 
     /*!
+        \qmlproperty string text
+
         Informative text to display.
     */
     property alias text: dialogLabel.text

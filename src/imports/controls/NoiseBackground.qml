@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -14,7 +14,7 @@
 
 /****************************************************************************
 **
-** Copyright (C) 2017 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Fluid and is derived from NoisyGradient.qml
@@ -53,7 +53,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.10
 
 /*!
     \qmltype NoiseBackground
@@ -63,7 +63,22 @@ import QtQuick 2.0
     \brief Background with noise.
 */
 ShaderEffect {
+    /*!
+        \qmlproperty Gradient gradient
+
+        The gradient to use to fill the rectangle.
+
+        \sa Rectangle::gradient
+    */
     property alias gradient: rect.gradient
+
+    /*!
+        \qmlproperty color color
+
+        The color to use to fill the rectangle.
+
+        \sa Rectangle::color
+    */
     property alias color: rect.color
 
     Rectangle {
@@ -74,6 +89,9 @@ ShaderEffect {
         visible: false
     }
 
+    /*!
+        \internal
+    */
     readonly property variant source: rect
 
     blending: false

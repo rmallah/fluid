@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,8 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 /*!
     \qmltype DisplayLabel
@@ -22,13 +22,14 @@ import QtQuick.Templates 2.0 as T
 
     \brief Text label with standard font and styling suitable to display text.
 
-    \code
-    DisplayLabel {
-        text: qsTr("Display text")
-    }
-    \endcode
+    Text label for the Material Design display text style.
+
+    \snippet fluidcontrols-displaylabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
+Label {
     /*!
         \qmlproperty int level
 
@@ -43,17 +44,29 @@ T.Label {
 
     font.pixelSize: {
         if (level <= 1)
-            return 30
+            return 34;
         else if (level == 2)
-            return 40
+            return 45;
         else if (level == 3)
-            return 50
-        return 100
+            return 56;
+        return 112;
     }
-    color: "#26282a"
-    linkColor: "#45a7d7"
+    lineHeight: {
+        if (level <= 1)
+            return 40.0;
+        else if (level == 2)
+            return 48.0;
+        return 1.0;
+    }
+    lineHeightMode: {
+        if (level <= 2)
+            return Text.FixedHeight;
+        return Text.ProportionalHeight;
+    }
+    font.weight: level >= 4 ? Font.Light : Font.Normal
+
     onLevelChanged: {
         if (level < 1 || level > 4)
-            console.error("DisplayLabel level must be between 1 and 4")
+            console.error("DisplayLabel level must be between 1 and 4");
     }
 }

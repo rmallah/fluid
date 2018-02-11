@@ -2,20 +2,21 @@
 
 GIT_URL=https://github.com/google/material-design-icons.git
 GIT_DIR=material-design-icons
-TARGET_DIR=icons
-QRC_FILE=$TARGET_DIR/icons.qrc
+TARGET_DIR=src/imports/controls/icons
+RELATIVE_DIR=icons
+QRC_FILE=src/imports/controls/icons.qrc
 TXT_FILE=src/demo/qml/icons.txt
 
 function copy_icon()
 {
     for FILE in $ICONS; do
         ICON=$(basename $FILE)
-        NEW_NAME=$(echo $ICON | sed -E 's/ic_(.*)_18px.svg/\1.svg/' | sed -E 's/ic_(.*)_24px.svg/\1.svg/' | sed -E 's/ic_(.*)_26x24px.svg/\1.svg/' | sed -E 's/ic_(.*)_48px.svg/\1.svg/')
+        NEW_NAME=$(echo $ICON | sed -E 's/ic_(.*)_24px.svg/\1.svg/' | sed -E 's/ic_(.*)_26x24px.svg/\1.svg/' | sed -E 's/ic_(.*)_48px.svg/\1.svg/')
         BASE_NAME=$(echo $NEW_NAME | sed -E 's/.svg//')
         if [ ! -f $TARGET_DIR/$CATEGORY/$NEW_NAME ]; then
             cp $FILE $TARGET_DIR/$CATEGORY/$NEW_NAME
             chmod 644 $TARGET_DIR/$CATEGORY/$NEW_NAME
-            echo "        <file>$CATEGORY/$NEW_NAME</file>" >> $QRC_FILE
+            echo "        <file>$RELATIVE_DIR/$CATEGORY/$NEW_NAME</file>" >> $QRC_FILE
             echo -e "\t$BASE_NAME" >> $TXT_FILE
         fi
     done
@@ -31,8 +32,10 @@ mkdir -p $TARGET_DIR
 
 > $TXT_FILE
 
-echo "<RCC>
-    <qresource prefix=\"/Fluid/Controls/\">" > $QRC_FILE
+cat > $QRC_FILE <<EOF
+<RCC>
+    <qresource prefix="/liri.io/imports/Fluid/Controls/">
+EOF
 for CATEGORY in ${CATEGORIES[*]}; do
     echo "$CATEGORY" >> $TXT_FILE
 
@@ -47,13 +50,10 @@ for CATEGORY in ${CATEGORIES[*]}; do
 
     ICONS=$(ls $GIT_DIR/$CATEGORY/svg/production/*24px*)
     copy_icon
-
-    ICONS=$(ls $GIT_DIR/$CATEGORY/svg/production/*18px*)
-    copy_icon
 done
-
-echo "    </qresource>
+cat >> $QRC_FILE <<EOF
+    </qresource>
 </RCC>
-" >> $QRC_FILE
+EOF
 
 rm -rf $GIT_DIR

@@ -1,7 +1,7 @@
 /*
  * This file is part of Fluid.
  *
- * Copyright (C) 2017 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:MPL2$
  *
@@ -12,8 +12,8 @@
  * $END_LICENSE$
  */
 
-import QtQuick 2.0
-import QtQuick.Templates 2.0 as T
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 /*!
     \qmltype TitleLabel
@@ -22,15 +22,14 @@ import QtQuick.Templates 2.0 as T
 
     \brief Text label with standard font and styling suitable to titles.
 
-    \code
-    Title {
-        text: qsTr("Translatable title")
-    }
-    \endcode
+    Text label for the Material Design title text style.
+
+    \snippet fluidcontrols-titlelabel.qml file
+
+    For more information you can read the
+    \l{https://material.io/guidelines/style/typography.html}{Material Design guidelines}.
 */
-T.Label {
-    font.pixelSize: 18
-    font.bold: true
-    color: "#26282a"
-    linkColor: "#45a7d7"
+Label {
+    font.pixelSize: 20
+    font.weight: Font.Medium
 }
