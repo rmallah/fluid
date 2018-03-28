@@ -5,6 +5,7 @@ depends QtQuick.Controls 2.0
 depends Fluid.Template 1.0
 typeinfo plugins.qmltypes
 
+AbstractCard 1.0 AbstractCard.qml
 Action 1.0 Action.qml
 AlertDialog 1.0 AlertDialog.qml
 AppBar 1.0 AppBar.qml
@@ -30,6 +31,7 @@ InputDialog 1.0 InputDialog.qml
 ListItem 1.0 ListItem.qml
 Loadable 1.0 Loadable.qml
 NavigationDrawer 1.0 NavigationDrawer.qml
+NavigationListView 1.0 NavigationListView.qml
 NoiseBackground 1.0 NoiseBackground.qml
 OverlayView 1.0 OverlayView.qml
 Page 1.0 Page.qml

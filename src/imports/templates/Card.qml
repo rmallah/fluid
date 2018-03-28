@@ -12,19 +12,22 @@
  * $END_LICENSE$
  */
 
-import Fluid.Templates 1.0 as FluidTemplates
+import QtQuick.Controls 2.3 as C
+import QtQuick.Controls.Material 2.3
 
 /*!
-    \qmltype Card
-    \inqmlmodule Fluid.Controls
-    \ingroup fluidcontrols
+    \qmltype AbstractCard
+    \inqmlmodule Fluid.Templates
+    \ingroup fluidtemplates
 
     \brief Cards display content composed of different elements.
-
-    \snippet fluidcontrols-card.qml file
 
     For more information you can read the
     \l{https://material.io/guidelines/components/cards.html}{Material Design guidelines}.
 */
-FluidTemplates.Card {
+C.Pane {
+    padding: 0
+
+    Material.background: "white"
+    Material.elevation: 1
 }
