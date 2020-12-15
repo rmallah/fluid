@@ -2,6 +2,7 @@ TARGETPATH = Fluid/Effects
 IMPORT_VERSION = 1.0
 
 QML_FILES += \
+		qmldir \
     plugins.qmltypes \
     $$files(*.qml)
 
